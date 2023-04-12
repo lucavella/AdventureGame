@@ -18,11 +18,11 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
         seed :: Int,
         sight :: Int,
         waterCap :: Int,
-        treasurePct :: Int,
-        waterPct :: Int,
-        portalPct :: Int,
-        lavaSinglePct :: Int,
-        lavaAdjacentPct :: Int,
+        treasurePct :: Double,
+        waterPct :: Double,
+        portalPct :: Double,
+        lavaSinglePct :: Double,
+        lavaAdjacentPct :: Double,
         gridDim :: (Int, Int)
     }
 
@@ -171,9 +171,9 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
             portalThreshold = waterPct + portalPct
             lavaSingleThreshold = portalThreshold + lavaSinglePct
             lavaAdjacentThreshold = portalThreshold + lavaAdjacentPct
-            randomResult  = randomR (0 :: Int, 99) rng
+            randomResult  = randomR (0 :: Double, 100) rng
             rand = fst randomResult
             nextRng = snd randomResult
-            randomResult' = randomR (0 :: Int, 99) nextRng
+            randomResult' = randomR (0 :: Double, 100) nextRng
             rand' = fst randomResult
             nextRng' = snd randomResult'
