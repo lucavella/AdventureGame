@@ -26,13 +26,13 @@ main =
     --     gridDim = (30, 20)
     -- }
     runGame AdventureGameConfig {
-        seed = 7,
+        seed = 4380,
         sight = 5,
         waterCap = 120,
         treasurePct = 50,
         waterPct = 1,
         portalPct = 0.01,
-        lavaSinglePct = 42,
-        lavaAdjacentPct = 40,
+        lavaSinglePct = 40,
+        lavaAdjacentPct = 50,
         gridDim = (30, 20)
     }

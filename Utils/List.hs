@@ -1,4 +1,4 @@
-module Utils.List (mapWithIndex, sublist, setAtIndex, sortF) where
+module Utils.List (mapWithIndex, sublist, setAtIndex, sortF, sortF') where
 
     import Data.List (genericTake, genericDrop)
     
@@ -24,3 +24,11 @@ module Utils.List (mapWithIndex, sublist, setAtIndex, sortF) where
     sortF f (x : xs) =
         sortF f (filter ((>=) (f x) . f) xs) ++ [x] ++ 
         sortF f (filter ((<) (f x) . f) xs) --(\a -> f a > f x)
+        
+    sortF' :: Ord n => (a -> n) -> [a] -> [a]
+    sortF' _ [] = []
+    sortF' f (x : xs) =
+        smaller `seq` larger `seq` smaller ++ [x] ++ larger
+        where
+            smaller = sortF' f (filter ((>=) (f x) . f) xs)
+            larger = sortF' f (filter ((<) (f x) . f) xs)

@@ -1,7 +1,7 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), isValidGameConfig) where
+module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), isValidGameConfig, closestDistance, initGrid) where
 
     import Models.Grid
     import Models.TerminalGame
@@ -90,25 +90,32 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
                 tiles = map (map $ show . getTile playerGrid) coords
 
     showDistances :: AdventureGameState -> String
-    showDistances AdventureGameState{..} = 
+    showDistances state@AdventureGameState{..} = 
         "Closest: water(" ++ showMaybe waterDistance ++
         "), desert(" ++ showMaybe desertDistance ++
         "), portal(" ++ showMaybe portalDistance ++ ")"
+        where
+            waterDistance = closestDistance state [Water, Desert False, Desert True] [Water]
+            desertDistance = closestDistance state [Water, Desert False, Desert True] [Desert False, Desert True]
+            portalDistance = closestDistance state [Water, Desert False, Desert True, Portal] [Portal]
+            showMaybe n = case n of
+                Nothing -> "/"
+                Just a -> show a
+                
+    closestDistance :: (Num n, Ord n) => AdventureGameState -> [TileType] -> [TileType] -> Maybe n
+    closestDistance AdventureGameState{..} allowedTiles goalTiles =
+        cheapestUC position (expand allowedTiles) (goalCheck goalTiles)        
         where
             expand allowedTiles coord = 
                 filter (\c -> elem (tileType $ getTile grid c) allowedTiles) . catMaybes $ map (makeMove coord) [(UpMove)..(LeftMove)]
             goalCheck goalTiles coord =
                 elem (tileType $ getTile grid coord) goalTiles
-            waterDistance = cheapestUC position (expand [Water, Desert False, Desert True]) (goalCheck [Water])
-            desertDistance = cheapestUC position (expand [Water, Desert False, Desert True]) (goalCheck [Desert False, Desert True])
-            portalDistance = cheapestUC position (expand [Water, Desert False, Desert True, Portal]) (goalCheck [Portal])
-            showMaybe n = case n of
-                Nothing -> "/"
-                Just a -> show a
-
+                
     isValidGameConfig :: AdventureGameConfig -> Bool
     isValidGameConfig AdventureGameConfig{..} =
-        waterPortalPct + lavaSinglePct <= 100 && waterPortalPct + lavaAdjacentPct <= 100
+        waterPortalPct + lavaSinglePct <= 100 &&
+        waterPortalPct + lavaAdjacentPct <= 100 &&
+        treasurePct <= 100
         where
             waterPortalPct = waterPct + portalPct
 

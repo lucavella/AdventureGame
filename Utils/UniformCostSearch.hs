@@ -1,8 +1,8 @@
 {-# LANGUAGE RankNTypes #-}
 
-module Utils.UniformCostSearch (cheapestUC) where
+module Utils.UniformCostSearch (cheapestUC, cheapestUC') where
 
-    import Utils.List (sortF)
+    import Utils.List (sortF, sortF')
 
 
     type Expand a = a -> [a]
@@ -34,8 +34,8 @@ module Utils.UniformCostSearch (cheapestUC) where
     cheapestUCIter' ((a, n) : as) seen exp gc
         | gc a      = Just $ n
         | otherwise =
-            cheapestUCIter' as' seen' exp gc
+            as' `seq` cheapestUCIter' as' seen' exp gc
             where
                 expA = filter (\x -> not $ x `elem` seen) $ exp a
                 seen' = expA `seq` seen ++ expA
-                as' = sortF snd $ map (\x -> (x, n + 1)) expA ++ as
+                as' = sortF' snd $ map (\x -> (x, n + 1)) expA ++ as
