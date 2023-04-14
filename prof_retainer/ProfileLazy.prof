@@ -1,351 +1,360 @@
-Retainer Profiling: 0, at 0.001250 seconds
-	Average number of visits per object = 3.181890
-Retainer Profiling: 1, at 0.001910 seconds
+Retainer Profiling: 0, at 0.001424 seconds
+	Average number of visits per object = 3.182745
+Retainer Profiling: 1, at 0.002425 seconds
 	Average number of visits per object = 3.026081
-Retainer Profiling: 2, at 0.002285 seconds
+Retainer Profiling: 2, at 0.002891 seconds
 	Average number of visits per object = 2.933146
-Retainer Profiling: 3, at 0.002612 seconds
+Retainer Profiling: 3, at 0.003159 seconds
 	Average number of visits per object = 2.808628
-Retainer Profiling: 4, at 0.002954 seconds
+Retainer Profiling: 4, at 0.003782 seconds
 	Average number of visits per object = 3.023458
-Retainer Profiling: 5, at 0.003245 seconds
+Retainer Profiling: 5, at 0.004155 seconds
 	Average number of visits per object = 2.495346
-Retainer Profiling: 6, at 0.003590 seconds
+Retainer Profiling: 6, at 0.004546 seconds
 	Average number of visits per object = 2.611240
-Retainer Profiling: 7, at 0.003931 seconds
+Retainer Profiling: 7, at 0.004959 seconds
 	Average number of visits per object = 2.638740
-Retainer Profiling: 8, at 0.004283 seconds
+Retainer Profiling: 8, at 0.005402 seconds
 	Average number of visits per object = 2.384159
-Retainer Profiling: 9, at 0.005042 seconds
+Retainer Profiling: 9, at 0.005739 seconds
+	Average number of visits per object = 2.547020
+Retainer Profiling: 10, at 0.006139 seconds
 	Average number of visits per object = 3.061342
-Retainer Profiling: 10, at 0.005385 seconds
+Retainer Profiling: 11, at 0.006547 seconds
 	Average number of visits per object = 2.284647
-Retainer Profiling: 11, at 0.005685 seconds
+Retainer Profiling: 12, at 0.006970 seconds
 	Average number of visits per object = 2.469079
-Retainer Profiling: 12, at 0.006019 seconds
+Retainer Profiling: 13, at 0.007347 seconds
 	Average number of visits per object = 2.486436
-Retainer Profiling: 13, at 0.006316 seconds
+Retainer Profiling: 14, at 0.007601 seconds
 	Average number of visits per object = 3.140224
-Retainer Profiling: 14, at 0.006681 seconds
+Retainer Profiling: 15, at 0.007904 seconds
 	Average number of visits per object = 2.279774
-Retainer Profiling: 15, at 0.007032 seconds
+Retainer Profiling: 16, at 0.008214 seconds
 	Average number of visits per object = 2.312038
-Retainer Profiling: 16, at 0.007334 seconds
+Retainer Profiling: 17, at 0.008535 seconds
 	Average number of visits per object = 3.160808
-Retainer Profiling: 17, at 0.007665 seconds
+Retainer Profiling: 18, at 0.008867 seconds
 	Average number of visits per object = 2.498557
-Retainer Profiling: 18, at 0.008016 seconds
-	Average number of visits per object = 2.502225
-Retainer Profiling: 19, at 0.008300 seconds
-	Average number of visits per object = 3.169581
-Retainer Profiling: 20, at 0.008675 seconds
-	Average number of visits per object = 2.246813
-Retainer Profiling: 21, at 0.009097 seconds
-	Average number of visits per object = 2.246835
-Retainer Profiling: 22, at 0.009523 seconds
-	Average number of visits per object = 2.475469
-Retainer Profiling: 23, at 0.009800 seconds
-	Average number of visits per object = 2.480808
-Retainer Profiling: 24, at 0.010126 seconds
-	Average number of visits per object = 2.192705
-Retainer Profiling: 25, at 0.010431 seconds
-	Average number of visits per object = 2.412371
-Retainer Profiling: 26, at 0.010697 seconds
-	Average number of visits per object = 2.402493
-Retainer Profiling: 27, at 0.010935 seconds
-	Average number of visits per object = 2.848858
-Retainer Profiling: 28, at 0.011229 seconds
-	Average number of visits per object = 2.829834
-Retainer Profiling: 29, at 0.011494 seconds
-	Average number of visits per object = 3.025517
-Retainer Profiling: 30, at 0.011708 seconds
-	Average number of visits per object = 2.339631
-Retainer Profiling: 31, at 0.011952 seconds
-	Average number of visits per object = 3.089247
-Retainer Profiling: 32, at 0.012211 seconds
-	Average number of visits per object = 3.089945
-Retainer Profiling: 33, at 0.012474 seconds
-	Average number of visits per object = 3.049554
-Retainer Profiling: 34, at 0.012680 seconds
-	Average number of visits per object = 3.001024
-Retainer Profiling: 35, at 0.012932 seconds
-	Average number of visits per object = 3.080471
-Retainer Profiling: 36, at 0.013216 seconds
-	Average number of visits per object = 2.342765
-Retainer Profiling: 37, at 0.013482 seconds
-	Average number of visits per object = 2.826683
-Retainer Profiling: 38, at 0.013786 seconds
-	Average number of visits per object = 2.324512
-Retainer Profiling: 39, at 0.014300 seconds
-	Average number of visits per object = 2.059312
-Retainer Profiling: 40, at 0.014700 seconds
-	Average number of visits per object = 2.814869
-Retainer Profiling: 41, at 0.015090 seconds
-	Average number of visits per object = 2.312033
-Retainer Profiling: 42, at 0.017621 seconds
-	Average number of visits per object = 2.271125
-Retainer Profiling: 43, at 0.017864 seconds
-	Average number of visits per object = 2.237315
-Retainer Profiling: 44, at 0.020249 seconds
-	Average number of visits per object = 2.963628
-Retainer Profiling: 45, at 0.020466 seconds
-	Average number of visits per object = 2.800376
-Retainer Profiling: 46, at 0.020726 seconds
-	Average number of visits per object = 1.962411
-Retainer Profiling: 47, at 0.021108 seconds
-	Average number of visits per object = 2.248214
-Retainer Profiling: 48, at 0.021304 seconds
-	Average number of visits per object = 2.176722
-Retainer Profiling: 49, at 0.021465 seconds
-	Average number of visits per object = 2.212781
-Retainer Profiling: 50, at 0.021670 seconds
-	Average number of visits per object = 1.923247
-Retainer Profiling: 51, at 0.021850 seconds
-	Average number of visits per object = 2.174705
-Retainer Profiling: 52, at 0.021979 seconds
-	Average number of visits per object = 2.120238
-Retainer Profiling: 53, at 0.022235 seconds
-	Average number of visits per object = 1.892394
-Retainer Profiling: 54, at 0.022449 seconds
-	Average number of visits per object = 1.890907
-Retainer Profiling: 55, at 0.022587 seconds
-	Average number of visits per object = 2.741963
-Retainer Profiling: 56, at 0.022819 seconds
-	Average number of visits per object = 1.898147
-Retainer Profiling: 57, at 0.023012 seconds
-	Average number of visits per object = 1.874724
-Retainer Profiling: 58, at 0.023127 seconds
-	Average number of visits per object = 2.926801
-Retainer Profiling: 59, at 0.023348 seconds
-	Average number of visits per object = 1.866974
-Retainer Profiling: 60, at 0.023476 seconds
-	Average number of visits per object = 2.931773
-Retainer Profiling: 61, at 0.023621 seconds
-	Average number of visits per object = 2.854300
-Retainer Profiling: 62, at 0.025150 seconds
-	Average number of visits per object = 2.048541
-Retainer Profiling: 63, at 0.025296 seconds
-	Average number of visits per object = 2.030437
-Retainer Profiling: 64, at 0.025445 seconds
-	Average number of visits per object = 2.021999
-Retainer Profiling: 65, at 0.025649 seconds
-	Average number of visits per object = 2.032208
-Retainer Profiling: 66, at 0.025460 seconds
-	Average number of visits per object = 2.116555
-Retainer Profiling: 67, at 0.025495 seconds
-	Average number of visits per object = 2.827302
-Retainer Profiling: 68, at 0.025641 seconds
-	Average number of visits per object = 2.105603
-Retainer Profiling: 69, at 0.025693 seconds
+Retainer Profiling: 19, at 0.009138 seconds
+	Average number of visits per object = 2.549627
+Retainer Profiling: 20, at 0.009453 seconds
+	Average number of visits per object = 2.521727
+Retainer Profiling: 21, at 0.009780 seconds
+	Average number of visits per object = 3.182311
+Retainer Profiling: 22, at 0.010084 seconds
+	Average number of visits per object = 2.511175
+Retainer Profiling: 23, at 0.010328 seconds
+	Average number of visits per object = 2.523856
+Retainer Profiling: 24, at 0.010629 seconds
+	Average number of visits per object = 2.205919
+Retainer Profiling: 25, at 0.010912 seconds
+	Average number of visits per object = 2.444285
+Retainer Profiling: 26, at 0.011281 seconds
+	Average number of visits per object = 2.385106
+Retainer Profiling: 27, at 0.011545 seconds
+	Average number of visits per object = 2.425151
+Retainer Profiling: 28, at 0.011804 seconds
+	Average number of visits per object = 2.086161
+Retainer Profiling: 29, at 0.012085 seconds
+	Average number of visits per object = 2.337283
+Retainer Profiling: 30, at 0.012399 seconds
+	Average number of visits per object = 2.108571
+Retainer Profiling: 31, at 0.012560 seconds
+	Average number of visits per object = 2.828261
+Retainer Profiling: 32, at 0.012855 seconds
+	Average number of visits per object = 2.359184
+Retainer Profiling: 33, at 0.013108 seconds
+	Average number of visits per object = 3.053537
+Retainer Profiling: 34, at 0.013449 seconds
+	Average number of visits per object = 2.079983
+Retainer Profiling: 35, at 0.013723 seconds
+	Average number of visits per object = 2.080368
+Retainer Profiling: 36, at 0.013948 seconds
+	Average number of visits per object = 3.002845
+Retainer Profiling: 37, at 0.014176 seconds
+	Average number of visits per object = 2.928787
+Retainer Profiling: 38, at 0.014455 seconds
+	Average number of visits per object = 2.336692
+Retainer Profiling: 39, at 0.014689 seconds
+	Average number of visits per object = 2.877851
+Retainer Profiling: 40, at 0.014928 seconds
+	Average number of visits per object = 3.081005
+Retainer Profiling: 41, at 0.015206 seconds
+	Average number of visits per object = 2.307664
+Retainer Profiling: 42, at 0.014988 seconds
+	Average number of visits per object = 2.841740
+Retainer Profiling: 43, at 0.015296 seconds
+	Average number of visits per object = 2.278882
+Retainer Profiling: 44, at 0.015623 seconds
+	Average number of visits per object = 2.022889
+Retainer Profiling: 45, at 0.015801 seconds
+	Average number of visits per object = 2.995618
+Retainer Profiling: 46, at 0.016039 seconds
+	Average number of visits per object = 2.034926
+Retainer Profiling: 47, at 0.016245 seconds
+	Average number of visits per object = 3.014300
+Retainer Profiling: 48, at 0.019100 seconds
+	Average number of visits per object = 1.980772
+Retainer Profiling: 49, at 0.019318 seconds
+	Average number of visits per object = 2.293085
+Retainer Profiling: 50, at 0.019484 seconds
+	Average number of visits per object = 2.213508
+Retainer Profiling: 51, at 0.019676 seconds
+	Average number of visits per object = 1.968872
+Retainer Profiling: 52, at 0.019792 seconds
+	Average number of visits per object = 2.902714
+Retainer Profiling: 53, at 0.019924 seconds
+	Average number of visits per object = 2.275763
+Retainer Profiling: 54, at 0.020064 seconds
+	Average number of visits per object = 2.780997
+Retainer Profiling: 55, at 0.020220 seconds
+	Average number of visits per object = 2.198205
+Retainer Profiling: 56, at 0.020335 seconds
+	Average number of visits per object = 2.800344
+Retainer Profiling: 57, at 0.020483 seconds
+	Average number of visits per object = 2.201992
+Retainer Profiling: 58, at 0.020642 seconds
+	Average number of visits per object = 2.107966
+Retainer Profiling: 59, at 0.020807 seconds
+	Average number of visits per object = 1.896474
+Retainer Profiling: 60, at 0.021017 seconds
+	Average number of visits per object = 1.887177
+Retainer Profiling: 61, at 0.021224 seconds
+	Average number of visits per object = 1.883868
+Retainer Profiling: 62, at 0.021400 seconds
+	Average number of visits per object = 1.884227
+Retainer Profiling: 63, at 0.021177 seconds
+	Average number of visits per object = 2.078169
+Retainer Profiling: 64, at 0.021399 seconds
+	Average number of visits per object = 2.057026
+Retainer Profiling: 65, at 0.021463 seconds
+	Average number of visits per object = 2.733684
+Retainer Profiling: 66, at 0.021546 seconds
+	Average number of visits per object = 2.810084
+Retainer Profiling: 67, at 0.021720 seconds
+	Average number of visits per object = 1.880665
+Retainer Profiling: 68, at 0.021906 seconds
+	Average number of visits per object = 2.062621
+Retainer Profiling: 69, at 0.022104 seconds
+	Average number of visits per object = 1.873929
+Retainer Profiling: 70, at 0.022288 seconds
+	Average number of visits per object = 1.865873
+Retainer Profiling: 71, at 0.022342 seconds
+	Average number of visits per object = 2.901377
+Retainer Profiling: 72, at 0.022309 seconds
+	Average number of visits per object = 2.836080
+Retainer Profiling: 73, at 0.022383 seconds
+	Average number of visits per object = 2.789007
+Retainer Profiling: 74, at 0.022523 seconds
+	Average number of visits per object = 1.848016
+Retainer Profiling: 75, at 0.022668 seconds
+	Average number of visits per object = 2.099209
+Retainer Profiling: 76, at 0.022780 seconds
+	Average number of visits per object = 2.753163
+Retainer Profiling: 77, at 0.022868 seconds
+	Average number of visits per object = 2.105437
+Retainer Profiling: 78, at 0.022889 seconds
 	Average number of visits per object = 2.761954
-Retainer Profiling: 70, at 0.025762 seconds
+Retainer Profiling: 79, at 0.022989 seconds
 	Average number of visits per object = 2.876968
-Retainer Profiling: 71, at 0.025983 seconds
+Retainer Profiling: 80, at 0.023212 seconds
 	Average number of visits per object = 1.843217
-Retainer Profiling: 72, at 0.026035 seconds
+Retainer Profiling: 81, at 0.023271 seconds
 	Average number of visits per object = 2.717634
-Retainer Profiling: 73, at 0.026072 seconds
+Retainer Profiling: 82, at 0.023303 seconds
 	Average number of visits per object = 2.728319
-Retainer Profiling: 74, at 0.026246 seconds
-	Average number of visits per object = 2.000557
-Retainer Profiling: 75, at 0.026425 seconds
+Retainer Profiling: 83, at 0.023452 seconds
+	Average number of visits per object = 2.000398
+Retainer Profiling: 84, at 0.023583 seconds
 	Average number of visits per object = 1.838232
-Retainer Profiling: 76, at 0.026437 seconds
+Retainer Profiling: 85, at 0.023581 seconds
 	Average number of visits per object = 2.768066
-Retainer Profiling: 77, at 0.026561 seconds
+Retainer Profiling: 86, at 0.023675 seconds
 	Average number of visits per object = 2.064245
-Retainer Profiling: 78, at 0.026646 seconds
+Retainer Profiling: 87, at 0.023742 seconds
 	Average number of visits per object = 2.003934
-Retainer Profiling: 79, at 0.026659 seconds
+Retainer Profiling: 88, at 0.023764 seconds
 	Average number of visits per object = 2.851107
-Retainer Profiling: 80, at 0.026830 seconds
+Retainer Profiling: 89, at 0.023910 seconds
 	Average number of visits per object = 1.847574
-Retainer Profiling: 81, at 0.026870 seconds
+Retainer Profiling: 90, at 0.023941 seconds
 	Average number of visits per object = 2.844383
-Retainer Profiling: 82, at 0.027023 seconds
+Retainer Profiling: 91, at 0.024065 seconds
 	Average number of visits per object = 1.849462
-Retainer Profiling: 83, at 0.027179 seconds
+Retainer Profiling: 92, at 0.024157 seconds
 	Average number of visits per object = 2.013855
-Retainer Profiling: 84, at 0.027308 seconds
+Retainer Profiling: 93, at 0.024302 seconds
 	Average number of visits per object = 2.020849
-Retainer Profiling: 85, at 0.027385 seconds
+Retainer Profiling: 94, at 0.024329 seconds
 	Average number of visits per object = 2.055714
-Retainer Profiling: 86, at 0.027517 seconds
+Retainer Profiling: 95, at 0.024458 seconds
 	Average number of visits per object = 2.026415
-Retainer Profiling: 87, at 0.027590 seconds
+Retainer Profiling: 96, at 0.024515 seconds
 	Average number of visits per object = 1.995508
-Retainer Profiling: 88, at 0.027733 seconds
+Retainer Profiling: 97, at 0.024610 seconds
 	Average number of visits per object = 1.834568
-Retainer Profiling: 89, at 0.027895 seconds
+Retainer Profiling: 98, at 0.024706 seconds
 	Average number of visits per object = 2.006326
-Retainer Profiling: 90, at 0.028052 seconds
+Retainer Profiling: 99, at 0.024832 seconds
 	Average number of visits per object = 1.834398
-Retainer Profiling: 91, at 0.027798 seconds
+Retainer Profiling: 100, at 0.024765 seconds
 	Average number of visits per object = 2.841518
-Retainer Profiling: 92, at 0.027962 seconds
+Retainer Profiling: 101, at 0.024729 seconds
 	Average number of visits per object = 2.848846
-Retainer Profiling: 93, at 0.028135 seconds
+Retainer Profiling: 102, at 0.024883 seconds
 	Average number of visits per object = 1.844876
-Retainer Profiling: 94, at 0.028183 seconds
+Retainer Profiling: 103, at 0.024952 seconds
 	Average number of visits per object = 2.010653
-Retainer Profiling: 95, at 0.028348 seconds
+Retainer Profiling: 104, at 0.025049 seconds
 	Average number of visits per object = 2.010481
-Retainer Profiling: 96, at 0.028424 seconds
+Retainer Profiling: 105, at 0.025075 seconds
 	Average number of visits per object = 2.009331
-Retainer Profiling: 97, at 0.028581 seconds
-	Average number of visits per object = 1.855697
-Retainer Profiling: 98, at 0.028533 seconds
+Retainer Profiling: 106, at 0.025202 seconds
+	Average number of visits per object = 1.855818
+Retainer Profiling: 107, at 0.025116 seconds
 	Average number of visits per object = 2.691328
-Retainer Profiling: 99, at 0.028605 seconds
+Retainer Profiling: 108, at 0.025207 seconds
 	Average number of visits per object = 2.007626
-Retainer Profiling: 100, at 0.028658 seconds
+Retainer Profiling: 109, at 0.025286 seconds
 	Average number of visits per object = 2.012323
-Retainer Profiling: 101, at 0.028614 seconds
+Retainer Profiling: 110, at 0.025208 seconds
 	Average number of visits per object = 2.743605
-Retainer Profiling: 102, at 0.028589 seconds
+Retainer Profiling: 111, at 0.025133 seconds
 	Average number of visits per object = 2.836802
-Retainer Profiling: 103, at 0.028687 seconds
+Retainer Profiling: 112, at 0.025201 seconds
 	Average number of visits per object = 2.025939
-Retainer Profiling: 104, at 0.028696 seconds
+Retainer Profiling: 113, at 0.025195 seconds
 	Average number of visits per object = 2.052359
-Retainer Profiling: 105, at 0.028637 seconds
+Retainer Profiling: 114, at 0.025090 seconds
 	Average number of visits per object = 2.787631
-Retainer Profiling: 106, at 0.028581 seconds
+Retainer Profiling: 115, at 0.025043 seconds
 	Average number of visits per object = 2.830778
-Retainer Profiling: 107, at 0.028607 seconds
+Retainer Profiling: 116, at 0.025040 seconds
 	Average number of visits per object = 2.018429
-Retainer Profiling: 108, at 0.028534 seconds
+Retainer Profiling: 117, at 0.024937 seconds
 	Average number of visits per object = 2.816691
-Retainer Profiling: 109, at 0.028466 seconds
+Retainer Profiling: 118, at 0.024791 seconds
 	Average number of visits per object = 2.815756
-Retainer Profiling: 110, at 0.028541 seconds
+Retainer Profiling: 119, at 0.024852 seconds
 	Average number of visits per object = 1.961142
-Retainer Profiling: 111, at 0.028496 seconds
+Retainer Profiling: 120, at 0.024798 seconds
 	Average number of visits per object = 2.689346
-Retainer Profiling: 112, at 0.028385 seconds
+Retainer Profiling: 121, at 0.024659 seconds
 	Average number of visits per object = 2.784404
-Retainer Profiling: 113, at 0.028322 seconds
+Retainer Profiling: 122, at 0.024574 seconds
 	Average number of visits per object = 2.665186
-Retainer Profiling: 114, at 0.028418 seconds
+Retainer Profiling: 123, at 0.024661 seconds
 	Average number of visits per object = 1.802757
-Retainer Profiling: 115, at 0.028508 seconds
+Retainer Profiling: 124, at 0.024784 seconds
 	Average number of visits per object = 1.801526
-Retainer Profiling: 116, at 0.028432 seconds
+Retainer Profiling: 125, at 0.024608 seconds
 	Average number of visits per object = 2.011148
-Retainer Profiling: 117, at 0.028444 seconds
+Retainer Profiling: 126, at 0.024635 seconds
 	Average number of visits per object = 1.797296
-Retainer Profiling: 118, at 0.028499 seconds
+Retainer Profiling: 127, at 0.024640 seconds
 	Average number of visits per object = 1.803114
-Retainer Profiling: 119, at 0.028412 seconds
+Retainer Profiling: 128, at 0.024553 seconds
 	Average number of visits per object = 2.815104
-Retainer Profiling: 120, at 0.028357 seconds
+Retainer Profiling: 129, at 0.024475 seconds
 	Average number of visits per object = 2.729066
-Retainer Profiling: 121, at 0.028407 seconds
+Retainer Profiling: 130, at 0.024495 seconds
 	Average number of visits per object = 1.956429
-Retainer Profiling: 122, at 0.029236 seconds
+Retainer Profiling: 131, at 0.024501 seconds
+	Average number of visits per object = 1.794619
+Retainer Profiling: 132, at 0.024541 seconds
+	Average number of visits per object = 1.949197
+Retainer Profiling: 133, at 0.024434 seconds
 	Average number of visits per object = 2.811765
-Retainer Profiling: 123, at 0.029334 seconds
+Retainer Profiling: 134, at 0.024524 seconds
 	Average number of visits per object = 1.799623
-Retainer Profiling: 124, at 0.029393 seconds
+Retainer Profiling: 135, at 0.024556 seconds
 	Average number of visits per object = 1.806217
-Retainer Profiling: 125, at 0.029408 seconds
+Retainer Profiling: 136, at 0.024527 seconds
 	Average number of visits per object = 2.667406
-Retainer Profiling: 126, at 0.029358 seconds
+Retainer Profiling: 137, at 0.024417 seconds
 	Average number of visits per object = 2.687434
-Retainer Profiling: 127, at 0.029414 seconds
+Retainer Profiling: 138, at 0.024463 seconds
 	Average number of visits per object = 1.957163
-Retainer Profiling: 128, at 0.029331 seconds
+Retainer Profiling: 139, at 0.024293 seconds
 	Average number of visits per object = 2.684675
-Retainer Profiling: 129, at 0.029368 seconds
+Retainer Profiling: 140, at 0.024301 seconds
 	Average number of visits per object = 1.948219
-Retainer Profiling: 130, at 0.029269 seconds
+Retainer Profiling: 141, at 0.024232 seconds
 	Average number of visits per object = 2.770293
-Retainer Profiling: 131, at 0.028747 seconds
-	Average number of visits per object = 2.784376
-Retainer Profiling: 132, at 0.028846 seconds
-	Average number of visits per object = 1.956271
-Retainer Profiling: 133, at 0.028784 seconds
+Retainer Profiling: 142, at 0.024248 seconds
+	Average number of visits per object = 1.956833
+Retainer Profiling: 143, at 0.024153 seconds
 	Average number of visits per object = 2.823794
-Retainer Profiling: 134, at 0.028768 seconds
-	Average number of visits per object = 2.668645
-Retainer Profiling: 135, at 0.028811 seconds
-	Average number of visits per object = 1.996256
-Retainer Profiling: 136, at 0.028910 seconds
-	Average number of visits per object = 1.799005
-Retainer Profiling: 137, at 0.028809 seconds
-	Average number of visits per object = 2.719794
-Retainer Profiling: 138, at 0.028703 seconds
-	Average number of visits per object = 2.666722
-Retainer Profiling: 139, at 0.028756 seconds
-	Average number of visits per object = 1.948811
-Retainer Profiling: 140, at 0.028843 seconds
-	Average number of visits per object = 1.943509
-Retainer Profiling: 141, at 0.028894 seconds
-	Average number of visits per object = 1.791691
-Retainer Profiling: 142, at 0.028925 seconds
-	Average number of visits per object = 1.948856
-Retainer Profiling: 143, at 0.029004 seconds
-	Average number of visits per object = 1.798271
-Retainer Profiling: 144, at 0.029023 seconds
-	Average number of visits per object = 1.992900
-Retainer Profiling: 145, at 0.029098 seconds
-	Average number of visits per object = 1.794740
-Retainer Profiling: 146, at 0.029023 seconds
-	Average number of visits per object = 2.662852
-Retainer Profiling: 147, at 0.029064 seconds
-	Average number of visits per object = 1.943544
-Retainer Profiling: 148, at 0.028930 seconds
+Retainer Profiling: 144, at 0.024091 seconds
+	Average number of visits per object = 2.670771
+Retainer Profiling: 145, at 0.024083 seconds
+	Average number of visits per object = 1.999158
+Retainer Profiling: 146, at 0.024160 seconds
+	Average number of visits per object = 1.798830
+Retainer Profiling: 147, at 0.024004 seconds
+	Average number of visits per object = 2.703253
+Retainer Profiling: 148, at 0.023856 seconds
+	Average number of visits per object = 2.665076
+Retainer Profiling: 149, at 0.023903 seconds
+	Average number of visits per object = 1.946736
+Retainer Profiling: 150, at 0.026282 seconds
+	Average number of visits per object = 2.662870
+Retainer Profiling: 151, at 0.026291 seconds
+	Average number of visits per object = 1.945309
+Retainer Profiling: 152, at 0.026112 seconds
 	Average number of visits per object = 2.805083
-Retainer Profiling: 149, at 0.028749 seconds
-	Average number of visits per object = 2.797681
-Retainer Profiling: 150, at 0.028684 seconds
-	Average number of visits per object = 2.700880
-Retainer Profiling: 151, at 0.028709 seconds
-	Average number of visits per object = 1.963389
-Retainer Profiling: 152, at 0.028566 seconds
-	Average number of visits per object = 2.797602
-Retainer Profiling: 153, at 0.028503 seconds
-	Average number of visits per object = 1.968940
-Retainer Profiling: 154, at 0.028444 seconds
-	Average number of visits per object = 1.939577
-Retainer Profiling: 155, at 0.028274 seconds
-	Average number of visits per object = 2.786164
-Retainer Profiling: 156, at 0.028151 seconds
-	Average number of visits per object = 2.787279
-Retainer Profiling: 157, at 0.027975 seconds
-	Average number of visits per object = 2.789622
-Retainer Profiling: 158, at 0.027842 seconds
-	Average number of visits per object = 2.787798
-Retainer Profiling: 159, at 0.027658 seconds
-	Average number of visits per object = 2.771238
-Retainer Profiling: 160, at 0.027531 seconds
-	Average number of visits per object = 2.642387
-Retainer Profiling: 161, at 0.027517 seconds
-	Average number of visits per object = 1.744539
-Retainer Profiling: 162, at 0.027382 seconds
-	Average number of visits per object = 2.661472
-Retainer Profiling: 163, at 0.027350 seconds
-	Average number of visits per object = 1.934588
-Retainer Profiling: 164, at 0.027164 seconds
-	Average number of visits per object = 2.640212
-Retainer Profiling: 165, at 0.027885 seconds
-	Average number of visits per object = 2.741412
-Retainer Profiling: 166, at 0.027761 seconds
-	Average number of visits per object = 2.747496
-Retainer Profiling: 167, at 0.027523 seconds
-	Average number of visits per object = 2.649191
-Retainer Profiling: 168, at 0.027605 seconds
-	Average number of visits per object = 1.745017
-Retainer Profiling: 169, at 0.027668 seconds
-	Average number of visits per object = 1.892503
-Retainer Profiling: 170, at 0.027720 seconds
-	Average number of visits per object = 3.140995
+Retainer Profiling: 153, at 0.026047 seconds
+	Average number of visits per object = 1.800355
+Retainer Profiling: 154, at 0.025908 seconds
+	Average number of visits per object = 2.805434
+Retainer Profiling: 155, at 0.025970 seconds
+	Average number of visits per object = 1.944204
+Retainer Profiling: 156, at 0.025789 seconds
+	Average number of visits per object = 2.702136
+Retainer Profiling: 157, at 0.025744 seconds
+	Average number of visits per object = 1.963699
+Retainer Profiling: 158, at 0.025656 seconds
+	Average number of visits per object = 1.937956
+Retainer Profiling: 159, at 0.025396 seconds
+	Average number of visits per object = 2.782057
+Retainer Profiling: 160, at 0.025218 seconds
+	Average number of visits per object = 2.780176
+Retainer Profiling: 161, at 0.025072 seconds
+	Average number of visits per object = 2.675035
+Retainer Profiling: 162, at 0.024896 seconds
+	Average number of visits per object = 2.695629
+Retainer Profiling: 163, at 0.024773 seconds
+	Average number of visits per object = 2.643589
+Retainer Profiling: 164, at 0.024576 seconds
+	Average number of visits per object = 2.778928
+Retainer Profiling: 165, at 0.024538 seconds
+	Average number of visits per object = 1.886168
+Retainer Profiling: 166, at 0.024316 seconds
+	Average number of visits per object = 2.787387
+Retainer Profiling: 167, at 0.024346 seconds
+	Average number of visits per object = 1.898622
+Retainer Profiling: 168, at 0.024088 seconds
+	Average number of visits per object = 2.781032
+Retainer Profiling: 169, at 0.023768 seconds
+	Average number of visits per object = 2.782183
+Retainer Profiling: 170, at 0.023766 seconds
+	Average number of visits per object = 1.893912
+Retainer Profiling: 171, at 0.023862 seconds
+	Average number of visits per object = 1.747312
+Retainer Profiling: 172, at 0.023679 seconds
+	Average number of visits per object = 2.640939
+Retainer Profiling: 173, at 0.023671 seconds
+	Average number of visits per object = 1.742340
+Retainer Profiling: 174, at 0.023641 seconds
+	Average number of visits per object = 1.891103
+Retainer Profiling: 175, at 0.023639 seconds
+	Average number of visits per object = 1.898159
+Retainer Profiling: 176, at 0.023507 seconds
+	Average number of visits per object = 2.641875
 
 Retainer sets created during profiling:
 SET 2 = {<SYSTEM.SYSTEM>}
-SET 105 = {<Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>}
 SET 114 = {<SYSTEM.SYSTEM>, <Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>}
-SET 209 = {<Utils.List.sortF,Utils.UniformCostSearch.cheapestUCIter.as',Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>}
-SET 212 = {<SYSTEM.SYSTEM>, <Utils.List.sortF,Utils.UniformCostSearch.cheapestUCIter.as',Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>}
-SET 234 = {<Utils.UniformCostSearch.cheapestUCIter.as',Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>}
-SET 239 = {<Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>, <Utils.UniformCostSearch.cheapestUCIter.as',Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>}
+SET 207 = {<Utils.List.sortF,Utils.UniformCostSearch.cheapestUCIter.as',Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>}
+SET 210 = {<SYSTEM.SYSTEM>, <Utils.List.sortF,Utils.UniformCostSearch.cheapestUCIter.as',Utils.UniformCostSearch.cheapestUCIter,Utils.UniformCostSearch.cheapestUC,Main.lazyClosestPortal,Main.main.lazyPortalDistance,Main.main,Main.CAF>}
