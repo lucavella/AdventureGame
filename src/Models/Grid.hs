@@ -8,11 +8,12 @@ module Models.Grid (TileType(..), GridTile(..), GridRow, Grid, Coordinate(..), P
     import System.Random (mkStdGen, randomR)
 
 
-    -- different displayable types of tiles
+    -- different displayable types of tiles, desert tiles also track if there is a treasure
+    -- only the first 4 can actually appear in the grid, the others are used for displaying the grid
     data TileType = Desert Bool | Water | Lava | Portal | Player | Undiscovered | OutOfBounds
         deriving Eq
 
-    -- actual types of tiles
+    -- data type to encapsulate both the type of a tile and if it has been discovered
     data GridTile = GridTile {
         tileType :: TileType,
         seen :: Bool
@@ -20,12 +21,13 @@ module Models.Grid (TileType(..), GridTile(..), GridRow, Grid, Coordinate(..), P
 
     type GridRow = [GridTile]
     type Grid = [GridRow]
+
     type Coordinate = (Integer, Integer)
 
     data PlayerMove = UpMove | RightMove | DownMove | LeftMove
         deriving (Eq, Enum)
 
-
+    -- defines string representations corresponding to a tile type
     instance Show TileType where
         show tileType = case tileType of
             -- colored (unix) block representation
@@ -46,10 +48,12 @@ module Models.Grid (TileType(..), GridTile(..), GridRow, Grid, Coordinate(..), P
             -- Undiscovered -> "#"
             -- OutOfBounds -> " "
 
+    -- grid tiles are only shown as their actual type if they have been discovered
     instance Show GridTile where
         show (GridTile t True) = show t
         show (GridTile _ False) = show Undiscovered
 
+    -- updates a coordinate by moving in direction, making sure not the go out of bounds
     makeMove :: Coordinate -> PlayerMove -> Maybe Coordinate
     makeMove (x, y) move = case move of
         DownMove -> Just (x, y + 1)
@@ -57,22 +61,27 @@ module Models.Grid (TileType(..), GridTile(..), GridRow, Grid, Coordinate(..), P
         UpMove -> if y > 0 then Just (x, y - 1) else Nothing
         LeftMove -> if x > 0 then Just (x - 1, y) else Nothing
 
+    -- Euclidean distance between 2 coordinates
     distance :: Coordinate -> Coordinate -> Double
     distance (x, y) (x', y') =
         sqrt $ fromInteger $ (x - x') ^ 2 + (y - y') ^ 2
 
+    -- gets a grid tile based on a coordinate
     getTile :: Grid -> Coordinate -> GridTile
     getTile grid coord@(x, y)
         | x < 0 = GridTile OutOfBounds True
         | y < 0 = GridTile OutOfBounds True
         | otherwise = (uncurry . flip $ genericIndex . genericIndex grid) coord
 
+    -- returns a new grid by changing a grid tile on the desired coordinate
     setTile :: Grid -> Coordinate -> GridTile -> Grid
     setTile grid (x, y) tile =
         setAtIndex y (setAtIndex x tile row) grid
         where
             row = genericIndex grid y
     
+    -- updates the grid by marking all grid tiles as seen in a radius around a given coordinate
+    -- uses lazy evaluation to iterate over the entire infinite grid
     updateSeenGrid :: Grid -> Coordinate -> Integer -> Grid
     updateSeenGrid grid position sight =
         mapWithIndex colFun grid

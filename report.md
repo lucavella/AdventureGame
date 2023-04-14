@@ -6,7 +6,7 @@
 - performance to which extent important? Search + grid (see first point)
 
 **TODO**
-- UCS is BFS (cost = 1 per change)
+- UCS is BFS (cost = 1 per change) -> simply append agenda, no need to sort
 - Grid performance
 
 Author: Luca Iacovella  
@@ -15,7 +15,7 @@ Email: [luca.iacovella@vub.be](mailto:luca.iacovella@vub.be)
 ![game screenshot](img/screenshot.png)
 
 ## Source code
-In this section, I outline my implementation of the project and motivate my decisions where appropriate. Please consult the source code for a more detailed description for each function.
+In this section, I outline my implementation of the project and motivate my decisions where appropriate. Please consult the source code for a short description for each function.
 
 ### Utils.List
 The `Utils.List` module contains functions on lists that are not found in `Data.List`. Indexing is implemented to be generic so that the functions accept `Integer` as index. The reason for this is that the game `Grid` is can be infinite, but `Int` is bounded and thus cannot be used to access the entire grid on its own. It has a lazy and strict implementation of quicksort (i.e. `sortF`).
