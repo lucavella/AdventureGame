@@ -12,6 +12,8 @@
 Author: Luca Iacovella  
 Email: [luca.iacovella@vub.be](mailto:luca.iacovella@vub.be)
 
+![game screenshot](img/screenshot.png)
+
 ## Source code
 In this section, I outline my implementation of the project and motivate my decisions where appropriate. Please consult the source code for a more detailed description for each function.
 
@@ -27,7 +29,7 @@ To keep track of the game's world, I use a nested list of `GridTiles`, called a 
 Initially, I implemented the `Grid` as a flat list. The list encoded the 2D semi-infinite matrix by following the (quarter) rings around (0, 0). It saves some space by not needing a nested list. On the other hand, many functions required a conversion step of 2D `Coordinate` index to the index in the flat list. Also, access to `Coordinate` (m, n) is in `O(m * n)`, as opposed to `O(m + n)` in the 2D case. The real reason that I switched implementation is that updating the seen `GridTiles` is not straightforward.
 
 ### Utils.UniformCostSearch
-To calculate the distances to the closest water, desert and portal tile, I use the `Utils.UniformCostSearch` module. It contains a general implementation of uniform cost search (UCS) which is used for pathfinding. It takes arguments for a starting state and expands the next best state from a sorted list until a goal state is found, while keeping track of visited states. There is also both a lazy and strict implementation. The next best state is found by sorting the list of states, but could be improved by implementing it as a heap based priority queue. 
+To calculate the distances to the closest water, desert and portal tile, I use the `Utils.UniformCostSearch` module. It contains a general implementation of uniform cost search (UCS) which is used for pathfinding. It takes arguments for a starting state and expands the next best state from a sorted list until a goal state is found, while keeping track of visited states. There is also both a lazy and eager implementation. The next best state is found by sorting the list of states, but could be improved by implementing it as a heap based priority queue. 
 
 The pathfinding in practice represents states as coordinates and expands a state by making a move in all possible directions and only keeping those going through allowed `TileTypes`.
 
@@ -41,21 +43,21 @@ Displaying `AdventureGameState` involves showing the tile distances, water and t
 `initGrid` initializes a `Grid` based on a `AdventureGameConfig`. It generates an infinite list of infinite lists by the convenience of Haskell's lazy evaluation. A `StdGen` object initialized with the configured seed is passed over the outer list. It generates `Ints` to serve as seeds for the `StdGens` of the inner lists. Each element in the inner lists is initialized using the configured tile percentages and the random number generator.
 
 ## Heap profiling
-The implementations used for the distance measure are lazy for `sortF` and `cheapestUC` and without memory leak for `sortF'` and `cheapestUC'`. To demonstrate this we initialize a grid with much lava and a far away portal and profile the heap when calculating the distance to the closest portal. The source code is in `Profiling/ProfileLazy.hs` and `Profiling/ProfileStrict.hs` respectively. The overall memory consumption in terms of [cost-centres](https://downloads.haskell.org/ghc/latest/docs/users_guide/profiling.html#cost-centres-and-cost-centre-stacks) for the lazy implementation is as follows:
+The implementations used for the distance measure are lazy for `sortF` and `cheapestUC` and without memory leak for `sortF'` and `cheapestUC'`. To demonstrate this we initialize a grid with much lava and a far away portal and profile the heap when calculating the distance to the closest portal. The source code is in `Profiling/ProfileLazy.hs` and `Profiling/ProfileEager.hs` respectively. The overall memory consumption in terms of [cost-centres](https://downloads.haskell.org/ghc/latest/docs/users_guide/profiling.html#cost-centres-and-cost-centre-stacks) for the lazy implementation is as follows:
 
-![lazy cost-centre](prof_costcentre/ProfileLazy.svg)
+![lazy cost-centre](img/profile_lazy_costcentre.svg)
 
-and for the strict implementation:
+and for the eager implementation:
 
-![strict cost-centre](prof_costcentre/ProfileStrict.svg)
+![eager cost-centre](img/profile_eager_costcentre.svg)
 
-There seems barely any difference. However, if we look at the [retainers](https://downloads.haskell.org/ghc/latest/docs/users_guide/profiling.html#retainer-profiling) of interest, first for the lazy implementation:
+There seems barely any difference. However, if we look at the relevant [retainers](https://downloads.haskell.org/ghc/latest/docs/users_guide/profiling.html#retainer-profiling), first for the lazy implementation:
 
-![lazy cost-retainer](prof_retainer/ProfileLazy.svg)
+![lazy retainer](img/profile_lazy_retainer.svg)
 
-and then for the strict implementation:
+and then for the eager implementation:
 
-![strict cost-retainer](prof_retainer/ProfileStrict.svg)
+![eager retainer](img/profile_eager_retainer.svg)
 
 The peaks in memory usage in the lazy implementation are more than double of the peaks in the strict implementation. The strict implementation wastes significantly less memory. 
 
