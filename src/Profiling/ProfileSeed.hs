@@ -24,5 +24,5 @@ getProfileSeed = loop 0
                 portalDistance = closestDistance state [Water, Desert False, Desert True, Portal] [Portal]
                 goodEnough Nothing = False
                 goodEnough (Just n)
-                    | n < 150 = False
+                    | n < 100 = False
                     | otherwise = True
