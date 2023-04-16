@@ -79,11 +79,12 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
             DiedOfLava -> "You died from lava."
             Won -> "You safely escaped with all collected treasure!"
 
-    -- AdventureGameState is displayed by showing water and treasure, the distances to relevant tiles and the grid
+    -- AdventureGameState is displayed by showing position, water, treasure, the distances to relevant tiles and the grid
     instance Show AdventureGameState where
         show state@AdventureGameState{..} =
-            "Water: " ++ show water ++ "/" ++ (show $ waterCap gameConfig) ++ 
-            "\tTreasure: " ++ show treasure ++ "\n" ++
+            "Position: " ++ show position ++ "   " ++
+            "Water: " ++ show water ++ "/" ++ (show $ waterCap gameConfig) ++ "   " ++
+            "Treasure: " ++ show treasure ++ "\n" ++
             showDistances state ++ "\n" ++
             show event ++ "\n" ++
             (intercalate "\n" $ map (intercalate "") tiles) -- the tiles within a grid row are appended and the rows are joined with a newline
