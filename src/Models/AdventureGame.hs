@@ -1,7 +1,10 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), isValidGameConfig, closestDistance, initGrid) where
+module Models.AdventureGame (
+    AdventureGameConfig(..), AdventureGameState(..), 
+    isValidGameConfig, closestDistance, initGrid
+) where
 
     import Models.Grid
     import Models.TerminalGame
@@ -9,7 +12,6 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
     import Utils.UniformCostSearch (cheapestUC)
     import Data.Char (toLower)
     import Data.Maybe (catMaybes)
-    import Data.List (intercalate)
     import System.Random (StdGen, RandomGen, mkStdGen, random, randomR)
     import Text.Read (ReadS, readMaybe)
 
@@ -30,7 +32,6 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
 
     -- Game state data type that contains all information at a given point in the game
     data AdventureGameState = AdventureGameState {
-        position :: Coordinate,
         grid :: Grid,
         event :: AdventureGameEvent,
         water :: Int,
@@ -54,15 +55,14 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
     -- AdventureGameState is made a GameState and TerminalGame instance so it can be used in runGame
     instance GameState AdventureGameState where
         nextState state@AdventureGameState{..} cmd =
-            makeStateChange state =<< makeMove position =<< readMaybe cmd
+            pure . (makeStateChange state) =<< makeMoveGrid grid =<< readMaybe cmd
         isFinalState state@AdventureGameState{..} =
             event `elem` [DiedOfThirst, DiedOfLava, Won]
 
     instance TerminalGame AdventureGameState AdventureGameConfig where
         initialState gc
             | isValidGameConfig gc = Right $ AdventureGameState {
-                    position = (0, 0),
-                    grid = updateSeenGrid (initGrid gc) (0, 0) (toInteger $ sight gc),
+                    grid = updateSeenGrid (toInteger $ sight gc) (initGrid gc),
                     event = ReplenishedWater,
                     water = waterCap gc,
                     treasure = 0,
@@ -82,20 +82,15 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
     -- AdventureGameState is displayed by showing position, water, treasure, the distances to relevant tiles and the grid
     instance Show AdventureGameState where
         show state@AdventureGameState{..} =
-            "Position: " ++ show position ++ "   " ++
+            "Position: " ++ show pos ++ "   " ++
             "Water: " ++ show water ++ "/" ++ (show $ waterCap gameConfig) ++ "   " ++
             "Treasure: " ++ show treasure ++ "\n" ++
             showDistances state ++ "\n" ++
             show event ++ "\n" ++
-            (intercalate "\n" $ map (intercalate "") tiles) -- the tiles within a grid row are appended and the rows are joined with a newline
+            showGrid grid (toInteger width) (toInteger height)
             where
+                Grid pos _ _ = grid
                 (width, height) = gridDim gameConfig
-                (x, y) = position
-                minX = x - (floor $ fromIntegral $ width `div` 2) -- min x coordinate to display
-                minY = y - (floor $ fromIntegral $ height `div` 2) -- min y coordinate to display
-                coords = [[(x, y) | x <- [minX..(minX + toInteger width)]] | y <- [minY..(minY + toInteger height)]] -- (x, y) nested list of coordinates to display
-                playerGrid = setTile grid position $ GridTile Player True -- set the player tile at the player's position in the grid
-                tiles = map (map $ show . getTile playerGrid) coords -- get the string representation of each tile
 
     -- gets the distance to the closest water, desert and portal tile and returns it as string
     showDistances :: AdventureGameState -> String
@@ -115,12 +110,13 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
     -- it returns the distance (if there is a path) to the closest goal tile, by only walking over allowed tiles
     closestDistance :: (Num n, Ord n) => AdventureGameState -> [TileType] -> [TileType] -> Maybe n
     closestDistance AdventureGameState{..} allowedTiles goalTiles =
-        cheapestUC position (expand allowedTiles) (goalCheck goalTiles)        
+        cheapestUC pos (expand allowedTiles) (goalCheck goalTiles)        
         where
+            Grid pos _ _ = grid
             expand allowedTiles coord = 
-                filter (\c -> elem (tileType $ getTile grid c) allowedTiles) . catMaybes $ map (makeMove coord) [(UpMove)..(LeftMove)]
+                filter (\c -> elem (tileType $ getTileAt grid c) allowedTiles) . catMaybes $ map (makeMove coord) [(UpMove)..(LeftMove)]
             goalCheck goalTiles coord =
-                elem (tileType $ getTile grid coord) goalTiles
+                elem (tileType $ getTileAt grid coord) goalTiles
                 
     -- checks if the game configuration has percentages that do not exceed 100
     isValidGameConfig :: AdventureGameConfig -> Bool
@@ -132,42 +128,35 @@ module Models.AdventureGame (AdventureGameConfig(..), AdventureGameState(..), is
             waterPortalPct = waterPct + portalPct
 
     -- updates the game state given a new coordinate position by updating the event and by updating which new tiles have been discovered
-    makeStateChange :: AdventureGameState -> Coordinate -> Maybe AdventureGameState
-    makeStateChange state@AdventureGameState{..} coord@(x, y)
-        | x < 0 = Nothing
-        | y < 0 = Nothing
-        | otherwise = Just $ updateEvent state { position = coord, grid = newGrid }
-            where
-                newGrid = updateSeenGrid grid position (toInteger $ sight gameConfig)
-
     -- applies the event of the tile the player is on, based on the tile type (and the amount of water left)
-    updateEvent :: AdventureGameState -> AdventureGameState
-    updateEvent state@AdventureGameState{..}
-        | tile == Water = state { event = ReplenishedWater, water = waterCap gameConfig }
-        | tile == Lava = state { event = DiedOfLava }
-        | tile == Portal = state { event = Won }
-        | water == 0 = state { event = DiedOfThirst }
-        | tile == Desert False = state { event = NoEvent, water = water - 1 }
-        | tile == Desert True = state { event = CollectedTreasure, grid = newGrid, water = water - 1, treasure = treasure + 1 }
+    makeStateChange :: AdventureGameState -> Grid -> AdventureGameState
+    makeStateChange state@AdventureGameState{..} gr
+        | tileT == Water = state { event = ReplenishedWater, water = waterCap gameConfig, grid = newGrid }
+        | tileT == Lava = state { event = DiedOfLava, grid = newGrid }
+        | tileT == Portal = state { event = Won, grid = newGrid }
+        | water == 0 = state { event = DiedOfThirst, grid = newGrid }
+        | tileT == Desert False = state { event = NoEvent, water = water - 1, grid = newGrid }
+        | tileT == Desert True = state { event = CollectedTreasure, water = water - 1, treasure = treasure + 1, grid = newGrid' }
         where
-            tile = tileType $ getTile grid position
-            newGrid = setTile grid position $ GridTile (Desert False) True -- remove treasure from desert
+            newGrid@(Grid pos tile gbc) = updateSeenGrid (toInteger $ sight gameConfig) gr
+            tileT = tileType $ getTileAt newGrid pos
+            newGrid' = Grid pos (GridTile (Desert False) True) gbc -- remove treasure from desert
 
     -- initializes the grid based on the game configuration, taking into account the seed and tile type percentages
     -- guarantees that the first tile is always a water tile
     initGrid :: AdventureGameConfig -> Grid
     initGrid gc@AdventureGameConfig{..} =
-        firstRow : initGridRows gc nextRng firstRow
+        Grid (0, 0) firstTile $ GridBreadcrumbs [[]] (initGridRows gc nextRng $ firstTile : firstRow) [] firstRow
         where
             firstTile = GridTile Water True
-            firstRow = firstTile : (initGridTiles gc rowRng firstTile $ repeat firstTile)
+            firstRow = initGridTiles gc rowRng firstTile $ repeat firstTile
             randomResult = random $ mkStdGen seed
             rowRng = mkStdGen $ fst randomResult
             nextRng = snd randomResult
 
     -- iterates over the outer list of the infinite grid, takes the previous row as argument to be able to check if there was lava
     -- passes a new StdGen with new Int seed for each row, based on the initial seed
-    initGridRows :: RandomGen g => AdventureGameConfig -> g -> GridRow -> Grid
+    initGridRows :: RandomGen g => AdventureGameConfig -> g -> GridRow -> [GridRow]
     initGridRows gc rng prevRow =
         nextRow : initGridRows gc nextRng nextRow
         where
