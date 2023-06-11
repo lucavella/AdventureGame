@@ -88,10 +88,10 @@ module Gui.GuiAdventureGame where
             height = (fromIntegral h) / size
 
             GridBreadcrumbs tg bg lr rr = gbc -- topgrid, bottomgrid, leftrow, rightrow
-            lX = floor $ (width - 1) / 2 -- left x
-            rX = ceiling $ (width - 1) / 2 -- right x
-            tY = floor $ (height - 1) / 2 -- top y
-            bY = ceiling $ (height - 1) / 2 -- bottom y
+            lX = floor $ width / 2 -- left x
+            rX = ceiling $ width / 2 -- right x
+            tY = floor $ height / 2 -- top y
+            bY = ceiling $ height / 2 -- bottom y
 
             oobTile = GridTile OutOfBounds True
             playerTile = GridTile Player True
@@ -99,7 +99,7 @@ module Gui.GuiAdventureGame where
             tPad = replicate (fromInteger $ tY - y) $ replicate (ceiling width) oobTile -- get top grid out of bound padding
             lPad = replicate (fromInteger $ lX - x) oobTile -- get left side out of bound padding
 
-            r' = lPad ++ reverse (genericTake lX lr) ++ (playerTile : genericTake rX rr) -- get current row
+            r' = lPad ++ reverse (genericTake lX lr) ++ (tile : genericTake (rX + 1) rr) -- get current row
             tg' = tPad ++ reverseMap colFun (genericTake tY tg) -- get show of top grid
             bg' = map colFun (genericTake bY bg) -- get show of bottom grid
 
@@ -123,5 +123,5 @@ module Gui.GuiAdventureGame where
                     Water -> makeColorI 35 55 89 255
                     Lava -> makeColorI 82 23 21 255
                     Portal -> makeColorI 66 21 82 255
-                    Player -> makeColorI 11 71 5 255
-                    OutOfBounds -> makeColorI 255 0 0 255 --makeColorI 0 0 0 255
+                    Player -> makeColorI 110 71 5 255
+                    OutOfBounds -> makeColorI 0 0 0 255 --makeColorI 0 0 0 255
