@@ -22,10 +22,10 @@ module Gui.GuiAdventureGame where
 
 
     topLeft :: (Int, Int) -> Picture -> Picture
-    topLeft (w, h) = translate (- fromIntegral w / 2) (fromIntegral h / 2) -----------
+    topLeft (w, h) = translate (- fromIntegral w / 2) (fromIntegral h / 2)
 
     topRight :: (Int, Int) -> Picture -> Picture
-    topRight (w, h) = translate (fromIntegral w / 2) (fromIntegral h / 2) ------------
+    topRight (w, h) = translate (fromIntegral w / 2) (fromIntegral h / 2)
 
 
     instance GuiGame AdventureGameState PlayerMove where
@@ -46,7 +46,8 @@ module Gui.GuiAdventureGame where
 
         renderMap state@AdventureGameState{..} = do
             (w, h) <- getScreenSize
-            gridPicture <- gridPicture grid (w, h - 200)
+            gridPic <- gridPicture grid (w, h - 200)
+            playerPic <- playerPicture alive
             return $ pictures [
                 topLeft (w, h) $ pictures [
                     color white . translate 20 (-40) . scale 0.1 0.1 . Text $ "Position: " ++ show pos,
@@ -54,7 +55,8 @@ module Gui.GuiAdventureGame where
                     color white . translate 20 (-80) . scale 0.1 0.1 . Text $ "Treasure: " ++ show (length treasureCollected),
                     color white . translate 20 (-100) . scale 0.1 0.1 . Text $ showDistances state,
                     color white . translate 20 (-120) . scale 0.1 0.1 . Text $ show event,
-                    translate 0 (-200) gridPicture ],
+                    translate 0 0 playerPic, 
+                    translate 0 (-200) gridPic ],
                 topRight (w, h) $ pictures [
                     color white . translate (-200) (-40) . scale 0.1 0.1 $ Text "Controls",
                     color white . translate (-200) (-60) . scale 0.1 0.1 $ Text "Movement: W A S D",
@@ -62,6 +64,7 @@ module Gui.GuiAdventureGame where
                     color white . translate (-200) (-100) . scale 0.1 0.1 $ Text "Quit: ESC" ]]
             where
                 Grid pos _ _ = grid
+                alive = event `elem` [NoEvent, CollectedTreasure, ReplenishedWater, Won]
 
 
     -- gets the distance to the closest water, desert and portal tile and returns it as string
@@ -82,7 +85,7 @@ module Gui.GuiAdventureGame where
     -- show subgrid around player position, given a width and height
     gridPicture :: Grid -> (Int, Int) -> IO Picture
     gridPicture (Grid (x, y) tile gbc) (w, h) =
-        fmap pictures . sequence $ playerPic : (concat . mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg'))
+        fmap pictures . sequence . concat . mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg')
         --Text $ show $ length $ concat $ mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg')
         where
             tileSize = 24
@@ -106,29 +109,35 @@ module Gui.GuiAdventureGame where
             tg' = tPad ++ reverseMap colFun (genericTake tY tg) -- get show of top grid
             bg' = map colFun (genericTake bY bg) -- get show of bottom grid
 
-            playerTileX = (fromInteger lX) * tileSize + (tileSize / 2) - playerRadius
-            playerTileY = (fromInteger tY) * tileSize + (tileSize / 2) - playerRadius
-            playerPic = return . translate 0 0 . color (makeColorI 110 71 5 255) $ circle playerRadius
-
             colFun row = lPad ++ sublist (x - lX) (x + rX) row -- show row of tiles
 
             gridPictureFun i j t =
                 fmap (translate (fromIntegral j * (tileSize + 1)) (-fromIntegral i * (tileSize + 1))) $ tilePicture tileSize t
 
+
     tilePicture :: Float -> GridTile -> IO Picture
     tilePicture size tile = 
         case tile of
-            GridTile _ False -> return . Color k $ polygon [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
+            GridTile _ False -> return . Color g $ polygon [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
             GridTile t True -> case t of
-                Desert _ -> loadBMP "Images/desert.bmp"
-                Water -> loadBMP "Images/water.bmp"
-                Lava -> loadBMP "Images/lava.bmp"
-                Portal -> loadBMP "Images/portal.bmp"
-                OutOfBounds -> return . Color g $ polygon [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
+                Desert _ -> fmap (translate sx (-sy)) $ loadBMP "Images/desert.bmp"
+                Water -> fmap (translate sx (-sy)) $ loadBMP "Images/water.bmp"
+                Lava -> fmap (translate sx (-sy)) $ loadBMP "Images/lava.bmp"
+                Portal -> fmap (translate sx (-sy)) $ loadBMP "Images/portal.bmp"
+                OutOfBounds -> return . Color k $ polygon [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
         where
             x1 = 0
-            x2 = x1 + size
+            x2 = x1 + size + 1
             y1 = 0
-            y2 = y1 - size
-            k = makeColorI 38 38 38 255
+            y2 = y1 - size - 1
+            sx = size / 2 + 1
+            sy = size / 2
+            k = makeColorI 0 0 0 255
             g = makeColorI 38 38 38 255
+
+    playerPicture :: Bool -> IO Picture
+    playerPicture alive = loadBMP $
+        if alive
+        then "Images/alive.bmp"
+        else "Images/dead.bmp"
+        
