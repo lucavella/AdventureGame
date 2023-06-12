@@ -80,7 +80,7 @@ module Gui.GuiAdventureGame where
     -- show subgrid around player position, given a width and height
     gridPicture :: Grid -> (Int, Int) -> Picture
     gridPicture (Grid (x, y) tile gbc) (w, h) =
-        pictures (playerPic : concat . mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg'))
+        pictures $ playerPic : (concat . mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg'))
         --Text $ show $ length $ concat $ mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg')
         where
             tileSize = 24
@@ -104,9 +104,9 @@ module Gui.GuiAdventureGame where
             tg' = tPad ++ reverseMap colFun (genericTake tY tg) -- get show of top grid
             bg' = map colFun (genericTake bY bg) -- get show of bottom grid
 
-            playerTileX = lX * tileSize + (tileSize / 2) - playerRadius
-            playerTileY = -tY * tileSize - (tileSize / 2) + playerRadius
-            playerPic = translate playerTileX playerTileY . color (makeColorI 110 71 5 255) $ circle playerRadius
+            playerTileX = (fromInteger lX) * tileSize + (tileSize / 2) - playerRadius
+            playerTileY = (fromInteger tY) * tileSize + (tileSize / 2) - playerRadius
+            playerPic = translate playerTileX (-playerTileY) . color (makeColorI 110 71 5 255) $ circle playerRadius
 
             colFun row = lPad ++ sublist (x - lX) (x + rX) row -- show row of tiles
 
