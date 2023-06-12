@@ -7,7 +7,7 @@ import Gui.GuiAdventureGame
 main :: IO ()
 main = runGame AdventureGameConfig {
         seed = 2,
-        sight = 5,
+        sight = 7,
         waterCap = 12,
         treasurePct = 50,
         waterPct = 5,

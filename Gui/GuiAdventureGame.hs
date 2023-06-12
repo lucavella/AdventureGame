@@ -21,10 +21,10 @@ module Gui.GuiAdventureGame where
 
 
     topLeft :: (Int, Int) -> Picture -> Picture
-    topLeft (w, h) = translate (1920/2 - fromIntegral w / 2) (fromIntegral h / 2) -----------
+    topLeft (w, h) = translate (- fromIntegral w / 2) (fromIntegral h / 2) -----------
 
     topRight :: (Int, Int) -> Picture -> Picture
-    topRight (w, h) = translate (-1920/2 + fromIntegral w / 2) (fromIntegral h / 2) ------------
+    topRight (w, h) = translate (fromIntegral w / 2) (fromIntegral h / 2) ------------
 
 
     instance GuiGame AdventureGameState PlayerMove where
@@ -80,12 +80,13 @@ module Gui.GuiAdventureGame where
     -- show subgrid around player position, given a width and height
     gridPicture :: Grid -> (Int, Int) -> Picture
     gridPicture (Grid (x, y) tile gbc) (w, h) =
-        pictures . concat $ mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg')
+        pictures (playerPic : concat . mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg'))
         --Text $ show $ length $ concat $ mapWithIndexMatrix gridPictureFun $ tg' ++ (r' : bg')
         where
-            size = 25
-            width = (fromIntegral w) / size
-            height = (fromIntegral h) / size
+            tileSize = 24
+            playerRadius = 10
+            width = (fromIntegral w) / tileSize
+            height = (fromIntegral h) / tileSize
 
             GridBreadcrumbs tg bg lr rr = gbc -- topgrid, bottomgrid, leftrow, rightrow
             lX = floor $ width / 2 -- left x
@@ -103,10 +104,14 @@ module Gui.GuiAdventureGame where
             tg' = tPad ++ reverseMap colFun (genericTake tY tg) -- get show of top grid
             bg' = map colFun (genericTake bY bg) -- get show of bottom grid
 
+            playerTileX = lX * tileSize + (tileSize / 2) - playerRadius
+            playerTileY = -tY * tileSize - (tileSize / 2) + playerRadius
+            playerPic = translate playerTileX playerTileY . color (makeColorI 110 71 5 255) $ circle playerRadius
+
             colFun row = lPad ++ sublist (x - lX) (x + rX) row -- show row of tiles
 
-            gridPictureFun i j t = --tilePicture size t
-                translate (fromIntegral j * size) (-fromIntegral i * size) $ tilePicture size t
+            gridPictureFun i j t =
+                translate (fromIntegral j * tileSize) (-fromIntegral i * tileSize) $ tilePicture tileSize t
 
     tilePicture :: Float -> GridTile -> Picture
     tilePicture size tile = 
@@ -123,5 +128,4 @@ module Gui.GuiAdventureGame where
                     Water -> makeColorI 35 55 89 255
                     Lava -> makeColorI 82 23 21 255
                     Portal -> makeColorI 66 21 82 255
-                    Player -> makeColorI 110 71 5 255
-                    OutOfBounds -> makeColorI 0 0 0 255 --makeColorI 0 0 0 255
+                    OutOfBounds -> makeColorI 0 0 0 255
