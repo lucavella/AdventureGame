@@ -16,4 +16,4 @@ module Models.GameState (
 
 
     class GameConfig c s | c -> s where
-        initialState :: c -> Either String s
+        initialState :: c -> Maybe s

@@ -1,19 +1,21 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Persistence.Serializer (gameStateSerializer) where
+module Persistence.Serializer (saveGame) where
 
     import Models.Grid
     import Models.AdventureGame
+    import Data.List
+    import qualified Data.Set as S
 
 
     serializeParens :: String -> String
     serializeParens val = "( " ++ val ++ " )"
 
     serializeLine :: String -> String -> String
-    serializeLine kw val = kw ++ " " ++ (serializeParens $ show val)
+    serializeLine kw val = kw ++ " " ++ (serializeParens val)
 
-    serializeLines :: String -> (a -> String) -> [a] -> String
-    serializeLines kw shw = unlines . map (serializeLine kw . shw)
+    serializeLines :: String -> (a -> String) -> S.Set a -> [String]
+    serializeLines kw shw = foldr (\a acc -> (serializeLine kw $ shw a) : acc) []
 
     -- custom show for Coordinate
     -- cannot make Coordinate instance of show as it is a type synonym of a tuple
@@ -44,15 +46,16 @@ module Persistence.Serializer (gameStateSerializer) where
     instance Show AdventureGameState where
         show AdventureGameState{..} =
             show gameConfig ++ "\n" ++
-            serializeLine "position" (show pos) ++ "\n" ++
-            serializeLine "water" (show water) ++ "\n" ++
-            serializeLines "revealed" serializeCoordinate tilesVisited ++ "\n" ++
-            serializeLines "collected" serializeCoordinate treasureCollected ++ "\n" ++
-            serializeLines "emerging" serializeCoordinates wormsEmerging ++ "\n" ++
-            serializeLines "disappearing" serializeCoordinates wormsDisappearing
+            serializeLine "position" (serializeCoordinate pos) ++ "\n" ++
+            serializeLine "supply" (show water) ++ "\n" ++
+            intercalate "\n" (concat [
+                serializeLines "revealed" serializeCoordinate tilesVisited,
+                serializeLines "collected" serializeCoordinate treasureCollected,
+                serializeLines "emerging" serializeCoordinates wormsEmerging,
+                serializeLines "disappearing" serializeCoordinates wormsDisappearing ])
             where
                 Grid pos _ _ = grid
 
 
-    gameStateSerializer :: AdventureGameState -> String
-    gameStateSerializer = show
+    saveGame :: String -> AdventureGameState -> IO ()
+    saveGame fname = writeFile fname . show

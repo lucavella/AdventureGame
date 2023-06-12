@@ -1,26 +1,28 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Persistence.Parser (gameStateParser) where
+module Persistence.Parser (loadGame) where
 
     import Models.Grid
     import Models.AdventureGame
     import qualified Data.Map.Strict as M
+    import qualified Data.Set as S
     import Text.Parsec hiding (token)
     import Text.Parsec.Char
+    import System.Directory
 
 
     data ParsedVal = Natural Int
                    | FloatP Double
                    | Position Coordinate
-                   | Positions [Coordinate]
-                   | PositionsList [[Coordinate]]
+                   | Positions (S.Set Coordinate)
+                   | PositionsList (S.Set [Coordinate])
 
     type AdventureGameStateParsed = M.Map String ParsedVal
 
     initialParsedState :: AdventureGameStateParsed
     initialParsedState = M.fromList [
-        ("revealed", Positions []), ("collected", Positions []),
-        ("emerging", PositionsList []), ("disappearing", PositionsList []) ]
+        ("revealed", Positions S.empty), ("collected", Positions S.empty),
+        ("emerging", PositionsList S.empty), ("disappearing", PositionsList S.empty) ]
 
     parsedToState :: AdventureGameStateParsed -> Maybe AdventureGameState
     parsedToState parsed = do
@@ -55,7 +57,7 @@ module Persistence.Parser (gameStateParser) where
         }
         grid <- restoreGrid (initGrid gc) (toInteger s) rev col
         grid' <- makeMoveGrid grid pos
-        let (Grid _ tile _) = grid'
+        let Grid _ tile _ = grid'
 
         return AdventureGameState {
             grid = grid',
@@ -65,18 +67,14 @@ module Persistence.Parser (gameStateParser) where
             treasureCollected = col,
             wormsEmerging = em,
             wormsDisappearing = dis,
-            gameConfig = gc
+            gameConfig = gc,
+            message = Nothing
         }
 
-    restoreGrid :: Grid -> Integer -> [Coordinate] -> [Coordinate] -> Maybe Grid
-    restoreGrid g _ [] [] = Just g
-    restoreGrid g sight [] (c : collected) = do
-        let g' = setTileAt g c $ GridTile { tileType = Desert False, seen = True }
-        restoreGrid g' sight [] collected
-    restoreGrid g sight (c : revealed) collected = do
-        g' <- makeMoveGrid g c
-        restoreGrid (updateSeenGrid sight g') sight [] collected
-
+    restoreGrid :: Grid -> Integer -> S.Set Coordinate -> S.Set Coordinate -> Maybe Grid
+    restoreGrid grid sight rev col = do
+        let grid' = foldr (\c g -> setTileAt g c $ GridTile { tileType = Desert False, seen = True }) grid col
+        foldr (\c g -> g >>= flip makeMoveGrid c >>= \g' -> return $ updateSeenGrid sight g') (Just grid') rev
 
     type Parser = Parsec String AdventureGameStateParsed
 
@@ -142,8 +140,7 @@ module Persistence.Parser (gameStateParser) where
 
     -- implements LINES -> LINE \n LINES instead of LINES -> \n LINE LINES
     linesParse :: Parser AdventureGameStateParsed
-    linesParse =
-        sepBy1 line endOfLine >> getState
+    linesParse = many1 line >> eof >> getState
         where
             line = do
                 s <- getState
@@ -156,18 +153,18 @@ module Persistence.Parser (gameStateParser) where
                     lpList "disappearing" positionsListSet positionsParse s,
                     lpSingle "s" Natural natural s,
                     lpSingle "m" Natural natural s,
-                    lpSingle "g" Natural natural s,
+                    lpSingle "g" Natural integer s, -- seed is a signed integer
                     lpSingle "t" FloatP float s,
                     lpSingle "w" FloatP float s,
                     lpSingle "p" FloatP float s,
-                    lpSingle "l" FloatP float s,
                     lpSingle "ll" FloatP float s,
+                    lpSingle "l" FloatP float s,
                     lpSingle "x" Natural natural s,
                     lpSingle "y" FloatP float s ]
                 putState s'
             
             lpSingle kw f p s = lineParse kw p >>= \v -> return $ M.insert kw (f v) s
-            lpList kw f p s = lineParse kw p >>= \v -> return $ M.adjust (f (v :)) kw s
+            lpList kw f p s = lineParse kw p >>= \v -> return $ M.adjust (f $ S.insert v) kw s
             positionsSet f (Positions ps) = Positions $ f ps
             positionsListSet f (PositionsList pss) = PositionsList $ f pss
 
@@ -175,6 +172,14 @@ module Persistence.Parser (gameStateParser) where
     -- implements GAME -> LINES instead of GAME -> LINE LINES
     gameStateParser :: String -> Maybe AdventureGameState
     gameStateParser input = do
-        case runParser linesParse initialParsedState "save file" input of
+        case runParser linesParse initialParsedState "Loading save file" input of
             Left _ -> Nothing
             Right parsed -> parsedToState parsed
+
+
+    loadGame :: String -> IO (Maybe AdventureGameState)
+    loadGame fname = do 
+        exists <- doesFileExist fname
+        if exists
+        then gameStateParser <$> readFile fname
+        else return Nothing

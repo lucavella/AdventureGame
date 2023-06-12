@@ -3,7 +3,7 @@
 
 module Gui.GuiGame (
     GuiGame(..),
-    runGame
+    newGame, runGame
 ) where
 
     import Models.GameState
@@ -16,8 +16,8 @@ module Gui.GuiGame (
         renderMap :: s -> IO Picture
 
 
-    runGame :: (GameConfig c s, GuiGame s cmd) => c -> IO ()
-    runGame = either error startGame . initialState
-        where
-            nextFrame _ = return
-            startGame s = playIO FullScreen black 10 s renderMap handleEvent nextFrame
+    newGame :: (GameConfig c s, GuiGame s cmd) => c -> IO (Maybe ())
+    newGame c = sequence $ runGame <$> initialState c
+
+    runGame :: GuiGame s cmd => s -> IO ()
+    runGame s = playIO FullScreen black 0 s renderMap handleEvent (const return)

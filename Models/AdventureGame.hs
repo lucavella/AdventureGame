@@ -13,6 +13,7 @@ module Models.AdventureGame (
     import Data.Char (toLower)
     import Data.Maybe (catMaybes)
     import Data.List (intercalate)
+    import qualified Data.Set as S
     import System.Random (StdGen, RandomGen, mkStdGen, random, randomR)
     import Text.Read (ReadS, readMaybe)
 
@@ -37,11 +38,12 @@ module Models.AdventureGame (
         grid :: Grid,
         event :: AdventureGameEvent,
         water :: Int,
-        tilesVisited :: [Coordinate],
-        treasureCollected :: [Coordinate],
-        wormsEmerging :: [[Coordinate]],
-        wormsDisappearing :: [[Coordinate]],
-        gameConfig :: AdventureGameConfig
+        tilesVisited :: S.Set Coordinate,
+        treasureCollected :: S.Set Coordinate,
+        wormsEmerging :: S.Set [Coordinate],
+        wormsDisappearing :: S.Set [Coordinate],
+        gameConfig :: AdventureGameConfig,
+        message :: Maybe String
     }
 
     -- data type used in the game's state to keep track of what happened
@@ -69,17 +71,18 @@ module Models.AdventureGame (
 
     instance GameConfig AdventureGameConfig AdventureGameState where
         initialState gc
-            | isValidGameConfig gc = Right $ AdventureGameState {
+            | isValidGameConfig gc = Just $ AdventureGameState {
                     grid = updateSeenGrid (toInteger $ sight gc) (initGrid gc),
                     event = ReplenishedWater,
                     water = waterCap gc,
-                    tilesVisited = [(0, 0)],
-                    treasureCollected = [],
-                    wormsEmerging = [],
-                    wormsDisappearing = [],
-                    gameConfig = gc
+                    tilesVisited = S.fromList [(0, 0)],
+                    treasureCollected = S.empty,
+                    wormsEmerging = S.empty,
+                    wormsDisappearing = S.empty,
+                    gameConfig = gc,
+                    message = Nothing
                 }
-            | otherwise = Left "Invalid configuration parameters"
+            | otherwise = Nothing
                 
     -- given a game state, a list of tiles that are allowed to walk on and a list of goal tiles,
     -- it returns the distance (if there is a path) to the closest goal tile, by only walking over allowed tiles
@@ -96,11 +99,19 @@ module Models.AdventureGame (
     -- checks if the game configuration has percentages that do not exceed 100
     isValidGameConfig :: AdventureGameConfig -> Bool
     isValidGameConfig AdventureGameConfig{..} =
-        waterPortalPct + lavaSinglePct <= 100 &&
-        waterPortalPct + lavaAdjacentPct <= 100 &&
-        treasurePct <= 100
-        where
-            waterPortalPct = waterPct + portalPct
+        sight >= 0 &&
+        waterCap > 0 &&
+        treasurePct >= 0 &&
+        treasurePct <= 100 &&
+        waterPct > 0 &&
+        portalPct > 0 &&
+        lavaSinglePct >= 0 &&
+        lavaAdjacentPct >= 0 &&
+        wormLength > 0 &&
+        wormSpawnPct >= 0 &&
+        wormSpawnPct <= 100 &&
+        waterPct + portalPct + lavaSinglePct <= 100 &&
+        waterPct + portalPct + lavaAdjacentPct <= 100
 
     -- updates the game state given a new coordinate position by updating the event and by updating which new tiles have been discovered
     -- applies the event of the tile the player is on, based on the tile type (and the amount of water left)
@@ -115,7 +126,7 @@ module Models.AdventureGame (
                     then waterCap gameConfig
                     else water - 1,
             treasureCollected = if event == CollectedTreasure
-                                then (pos : treasureCollected)
+                                then S.insert pos treasureCollected
                                 else treasureCollected
         }
         where
@@ -123,13 +134,13 @@ module Models.AdventureGame (
             Grid pos _ _ = newGrid
             newState = state {
                 grid = newGrid,
-                tilesVisited = (pos : tilesVisited)
+                tilesVisited = S.insert pos tilesVisited
             }
             event = tileEvent newState
 
     tileEvent :: AdventureGameState -> AdventureGameEvent
     tileEvent AdventureGameState{..}
-        | elem pos . concat $ wormsEmerging ++ wormsDisappearing = DiedOfWorm
+        | not (setListElem pos wormsEmerging && setListElem pos wormsDisappearing) = DiedOfWorm
         | tileT == Water = ReplenishedWater
         | tileT == Lava = DiedOfLava
         | tileT == Portal = Won
@@ -139,6 +150,7 @@ module Models.AdventureGame (
         where
             Grid pos tile _ = grid
             tileT = tileType tile
+            setListElem e = S.null . S.filter (elem e) 
         
 
     -- initializes the grid zipper based on the game configuration, taking into account the seed and tile type percentages
