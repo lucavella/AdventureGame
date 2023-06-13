@@ -1,12 +1,15 @@
 import Models.AdventureGame (AdventureGameConfig(..))
 import Persistence.Parser
-import Gui.GuiGame
-import Gui.GuiAdventureGame
+import GUI.GUIGame
+import GUI.GUIAdventureGame
+import GUI.GUITiles
+import qualified Data.Map as M
 import Graphics.Gloss
 import System.Random
 import Control.Exception
 
 
+-- program entry point with simple menu
 main :: IO ()
 main = do
     putStrLn "Choose an option"
@@ -24,6 +27,7 @@ main = do
         otherwise -> putStrLn "Invalid input" >> main
 
 
+-- first option: start new game with default settings
 newGameOpt :: IO ()
 newGameOpt = do
     g <- randomIO
@@ -37,21 +41,29 @@ newGameOpt = do
         lavaSinglePct = 5,
         lavaAdjacentPct = 50,
         wormLength = 10,
-        wormSpawnPct = 5
+        wormSpawnPct = 15,
+        bmpTiles = M.empty
     }
     case result of
         Just () -> return ()
-        Nothing -> putStrLn "An error ocurred" >> return ()
+        Nothing -> putStrLn "An error ocurred" >> return () -- cannot happen with hard-coded config
 
+-- second option: start saved game
 loadGameOpt :: IO ()
 loadGameOpt = do
     ms <- loadGame saveFile
     case ms of
-        Nothing -> putStrLn "Parse Error" >> main
+        Nothing -> putStrLn "Parse Error" >> main -- back to menu if loading fails
         Just s -> runGame s
 
+-- third option: start new game with custom settings
 customGameOpt :: IO ()
 customGameOpt = do
+    -- gloss increasingly slows down when using bitmaps to render grid
+    -- this might be due to a memory leak, so bitmap graphics are not recommended
+    putStr "Bitmap graphics y/n (potentially bad performance, default n) > "
+    b <- getLineDefault "n"
+
     putStr "Seed (default: random) > "
     g' <- randomIO
     g <- getLineDefault $ show (g' :: Int)
@@ -80,9 +92,12 @@ customGameOpt = do
     putStr "Worms length (default: 10) > "
     x <- getLineDefault "10"
 
-    putStr "Worm spawn rate % (default: 5.0) > "
-    y <- getLineDefault "5"
+    putStr "Worm spawn rate % (default: 15.0) > "
+    y <- getLineDefault "15"
+    
+    bmps <- loadBMPTiles
 
+    -- try creating game config
     (do
         result <- newGame AdventureGameConfig {
             seed = read g,
@@ -94,17 +109,18 @@ customGameOpt = do
             lavaSinglePct = read l,
             lavaAdjacentPct = read ll,
             wormLength = read x,
-            wormSpawnPct = read y
+            wormSpawnPct = read y,
+            bmpTiles = if b == "y" then bmps else M.empty
         } 
         case result of
             Just () -> return ()
-            Nothing -> failed) `onException` failed
+            Nothing -> failed) `onException` failed -- exception occurs on invalid value for read
 
     where
         failed = putStrLn "Invalid game configuration" >> main
 
 
-
+-- get input from stdin with default value if nothing provided
 getLineDefault :: String -> IO String
 getLineDefault defLine = do
     line <- getLine

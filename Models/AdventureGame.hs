@@ -8,14 +8,13 @@ module Models.AdventureGame (
 
     import Models.Grid
     import Models.GameState
-    import Utils.List (mapWithIndex, sublist)
-    import Utils.BFS (cheapestBFS')
-    import Data.Char (toLower)
-    import Data.Maybe (catMaybes)
-    import Data.List (intercalate)
+    import Models.Worm
+    import GUI.GUITiles
+    import Utils.List
+    import Utils.BFS
+    import Data.Maybe
     import qualified Data.Set as S
-    import System.Random (StdGen, RandomGen, mkStdGen, random, randomR)
-    import Text.Read (ReadS, readMaybe)
+    import System.Random
 
 
     -- game configuration data type that defines a unique initial game state
@@ -30,7 +29,8 @@ module Models.AdventureGame (
         lavaSinglePct :: Double, -- l
         lavaAdjacentPct :: Double, -- ll
         wormLength :: Int, -- x
-        wormSpawnPct :: Double -- y
+        wormSpawnPct :: Double, -- y
+        bmpTiles :: GUITiles -- cached bitmap image tiles
     }
 
     -- game state data type that contains all information at a given point in the game
@@ -40,8 +40,8 @@ module Models.AdventureGame (
         water :: Int,
         tilesVisited :: S.Set Coordinate,
         treasureCollected :: S.Set Coordinate,
-        wormsEmerging :: S.Set [Coordinate],
-        wormsDisappearing :: S.Set [Coordinate],
+        wormsEmerging :: [[Coordinate]],
+        wormsDisappearing :: [[Coordinate]],
         gameConfig :: AdventureGameConfig,
         message :: Maybe String
     }
@@ -62,8 +62,10 @@ module Models.AdventureGame (
     
     -- GameState and TerminalGame instance so AdventureGameState can be used in runGame
     instance GameState AdventureGameState PlayerMove where
-        nextState state@AdventureGameState{..} cmd =
-            pure . (makeStateChange state) =<< makeMoveGrid grid =<< makeMove pos cmd
+        nextState state@AdventureGameState{..} cmd = sequence $ do
+            move <- makeMove pos cmd
+            grid' <- makeMoveGrid grid move
+            return $ makeStateChange state grid'
             where
                 Grid pos _ _ = grid
         isFinalState state@AdventureGameState{..} =
@@ -71,14 +73,15 @@ module Models.AdventureGame (
 
     instance GameConfig AdventureGameConfig AdventureGameState where
         initialState gc
-            | isValidGameConfig gc = Just $ AdventureGameState {
+            | isValidGameConfig gc = do
+                Just $ AdventureGameState {
                     grid = updateSeenGrid (toInteger $ sight gc) (initGrid gc),
                     event = ReplenishedWater,
                     water = waterCap gc,
                     tilesVisited = S.fromList [(0, 0)],
                     treasureCollected = S.empty,
-                    wormsEmerging = S.empty,
-                    wormsDisappearing = S.empty,
+                    wormsEmerging = [],
+                    wormsDisappearing = [],
                     gameConfig = gc,
                     message = Nothing
                 }
@@ -114,43 +117,56 @@ module Models.AdventureGame (
         waterPct + portalPct + lavaAdjacentPct <= 100
 
     -- updates the game state given a new coordinate position by updating the event and by updating which new tiles have been discovered
-    -- applies the event of the tile the player is on, based on the tile type (and the amount of water left)
-    makeStateChange :: AdventureGameState -> Grid -> AdventureGameState
-    makeStateChange state@AdventureGameState{..} g =
-        newState {
-            grid = if event == CollectedTreasure 
-                   then setTileAt newGrid pos (GridTile (Desert False) True) -- remove treasure
+    -- also updates worms by moving the existing ones and randomly spawning new ones as defined by the worm spawn rate
+    makeStateChange :: AdventureGameState -> Grid -> IO AdventureGameState
+    makeStateChange state@AdventureGameState{..} g = do
+        (em, dis) <- updateWorms (wormLength gameConfig) newGrid em dis -- worm movement updates
+        mNewWorm <- spawnWorm newGrid em dis (wormSpawnPct gameConfig) 2 spawnRange spawnRange -- maybe worm spawn
+        
+        let em' = case mNewWorm of
+                Just e -> [e] : em
+                Nothing -> em
+            newState = state { -- new temprary state
+                grid = newGrid,
+                tilesVisited = S.insert pos tilesVisited,
+                wormsEmerging = em',
+                wormsDisappearing = dis
+            }
+            event' = tileEvent newState
+
+        return newState { -- new state, updating the remaining fields
+            grid = if event' == CollectedTreasure 
+                   then setTileAt newGrid pos (GridTile DesertEmpty True) -- remove treasure
                    else newGrid,
-            event = event,
-            water = if event == ReplenishedWater
+            event = event',
+            water = if event' == ReplenishedWater
                     then waterCap gameConfig
                     else water - 1,
-            treasureCollected = if event == CollectedTreasure
+            treasureCollected = if event' == CollectedTreasure
                                 then S.insert pos treasureCollected
                                 else treasureCollected
         }
         where
             newGrid = updateSeenGrid (toInteger $ sight gameConfig) g
             Grid pos _ _ = newGrid
-            newState = state {
-                grid = newGrid,
-                tilesVisited = S.insert pos tilesVisited
-            }
-            event = tileEvent newState
+            em = wormsEmerging
+            dis = wormsDisappearing
+            spawnRange = sight gameConfig + wormLength gameConfig
 
+    -- gets the event that corresponds to the current tile
     tileEvent :: AdventureGameState -> AdventureGameEvent
     tileEvent AdventureGameState{..}
-        | not (setListElem pos wormsEmerging && setListElem pos wormsDisappearing) = DiedOfWorm
+        | not (sublistElem pos wormsEmerging && sublistElem pos wormsDisappearing) = DiedOfWorm
         | tileT == Water = ReplenishedWater
         | tileT == Lava = DiedOfLava
         | tileT == Portal = Won
         | water == 0 = DiedOfThirst
-        | tileT == Desert False = NoEvent
-        | tileT == Desert True = CollectedTreasure
+        | tileT == DesertEmpty = NoEvent
+        | tileT == DesertTreasure = CollectedTreasure
         where
             Grid pos tile _ = grid
             tileT = tileType tile
-            setListElem e = S.null . S.filter (elem e) 
+            sublistElem e = null . filter (elem e) 
         
 
     -- initializes the grid zipper based on the game configuration, taking into account the seed and tile type percentages
@@ -189,10 +205,13 @@ module Models.AdventureGame (
         | rand < portalThreshold = (GridTile Portal False, nextRng)
         | not isLavaAdjacent && rand < lavaSingleThreshold = (GridTile Lava False, nextRng)
         | isLavaAdjacent && rand < lavaAdjacentThreshold = (GridTile Lava False, nextRng)
-        | otherwise = (GridTile (Desert (rand' < treasurePct)) False, nextRng')
+        | otherwise = (GridTile desertTile False, nextRng')
         where
             portalThreshold = waterPct + portalPct
             lavaSingleThreshold = portalThreshold + lavaSinglePct
             lavaAdjacentThreshold = portalThreshold + lavaAdjacentPct
             (rand, nextRng)  = randomR (0 :: Double, 100) rng
             (rand', nextRng') = randomR (0 :: Double, 100) nextRng -- used to generate treasure
+            desertTile = if (rand' < treasurePct)
+                         then DesertTreasure
+                         else DesertEmpty

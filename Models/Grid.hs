@@ -3,20 +3,29 @@
 
 module Models.Grid (
     Coordinate, TileType(..), GridTile(..), GridRow, Grid(..), GridBreadcrumbs(..), PlayerMove(..), 
-    makeMove, makeMoveGrid, getTileAt, setTileAt, updateSeenGrid
+    makeMove, makeMoveGrid, distance, getTileAt, setTileAt, updateSeenGrid
 ) where
 
     import Utils.List
-    import Data.List (genericIndex, genericTake, genericDrop, intercalate)
-    import System.Random (mkStdGen, randomR)
+    import Data.List
 
 
     type Coordinate = (Integer, Integer)
 
-    -- different displayable types of tiles, desert tiles also track if there is a treasure
-    -- only the first 4 can actually appear in the grid, the others are used for displaying the grid
-    data TileType = Desert Bool | Water | Lava | Portal | Player | Undiscovered | OutOfBounds
-        deriving Eq
+    -- different displayable types of tiles
+    -- only the first 5 can actually appear in the grid
+    data TileType = DesertEmpty
+                  | DesertTreasure 
+                  | Water 
+                  | Lava 
+                  | Portal 
+                  | Undiscovered 
+                  | OutOfBounds 
+                  | PlayerAlive 
+                  | PlayerDead 
+                  | WormHead 
+                  | WormBody
+        deriving (Eq, Ord)
 
     -- data type to encapsulate both the type of a tile and if it has been discovered
     data GridTile = GridTile {
@@ -85,6 +94,7 @@ module Models.Grid (
         where
             GridBreadcrumbs tg bg lr rr = gbc -- topgrid, bottomgrid, leftrow, rightrow
 
+    -- sets a tile at a grid coordinate
     setTileAt :: Grid -> Coordinate -> GridTile -> Grid
     setTileAt g@(Grid pos@(x, y) tile gbc) coord@(x', y') newTile
         | x' < 0 || y' < 0 = g

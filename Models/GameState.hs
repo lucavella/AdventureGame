@@ -5,15 +5,13 @@ module Models.GameState (
     GameState(..), GameConfig(..)
 ) where
 
-    -- We use a type s to represent a game state, where ...
-    -- ... nextState computes the next game state, given the current state and next user input (may fail on invalid input)
-    -- ... isFinalState checks whether a given state is a final state
-    -- To "boot" a terminal-based game, we use a type s to represent game state and a type c to represent game configuration, where ...
-    -- ... we can compute an initial game state s using a given configuration c (which can fail if the configuration is invalid)
+    -- data class to represent the internal state of a game
+    -- the game state corresponds to a data type corresponding to user commands
     class GameState s cmd | s -> cmd where
-        nextState :: s -> cmd -> Maybe s
-        isFinalState :: s -> Bool
+        nextState :: s -> cmd -> IO (Maybe s) -- state transition, given command
+        isFinalState :: s -> Bool -- check if game is final
 
-
+    -- data class to represent the internal configuration of a game
+    -- the game config corresponds to a specific game state it generates
     class GameConfig c s | c -> s where
-        initialState :: c -> Maybe s
+        initialState :: c -> Maybe s -- generate initial state from config, if config is valid

@@ -2,7 +2,7 @@ module Utils.List (
     sublist, reverseAppend, reverseSplitAt, reverseMap, mapWithIndex, mapWithIndexMatrix, genericSet
 ) where
 
-    import Data.List (genericTake, genericDrop)
+    import Data.List
     
 
     -- keeps only the part of the list defined by the passed index range
